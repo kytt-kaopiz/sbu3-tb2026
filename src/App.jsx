@@ -232,7 +232,7 @@ function FormPage({ onSuccess }) {
         <div style={{display:"flex",gap:14,marginTop:44,flexWrap:"wrap",justifyContent:"center",position:"relative",animation:"fadeUp 0.7s 0.3s both"}}>
           <MetaChip icon="📅" label="Thời gian" value="27–28/06/2026" />
           <MetaChip icon="🏕️" label="Địa điểm" value="Sơn Tinh Camp, Ba Vì" />
-          <MetaChip icon="👥" label="Quy mô" value="~70 Chiến Binh" />
+          <MetaChip icon="👥" label="Quy mô" value="Toàn bộ SBU3" />
         </div>
         <button
           onClick={() => document.getElementById("reg-form").scrollIntoView({behavior:"smooth"})}
@@ -256,7 +256,7 @@ function FormPage({ onSuccess }) {
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:20}}>
             <InfoCard emoji="🎯" title="Mục tiêu" desc="Tái tạo năng lượng và động lực làm việc sau giai đoạn release căng thẳng. Xây dựng văn hóa đơn vị qua các hoạt động trải nghiệm thực tế và tự túc." />
             <InfoCard emoji="📍" title="Địa điểm" desc="Sơn Tinh Camp, Đồng Mô, Ba Vì, Hà Nội — thiên nhiên xanh mát, sông hồ thoáng đãng." />
-            <InfoCard emoji="🚌" title="Di chuyển" desc="Xe 29 & 45 chỗ đưa đón toàn đội. Tập trung tại đơn vị lúc 7:30 sáng ngày 27/06." />
+            <InfoCard emoji="🚌" title="Di chuyển" desc="Xe 29 & 45 chỗ đưa đón toàn đội. Tập trung tại đơn vị lúc 8:30 sáng ngày 27/06." />
             <InfoCard emoji="🔥" title="Hoạt động hot" desc="Team Building ngoài trời, BBQ Gala Dinner, Lửa trại, Trò chơi gắn kết, Trao giải thưởng." />
             <InfoCard emoji="🍖" title="Ẩm thực" desc="3 bữa ăn chính ngon–rẻ–đủ đô. Menu BBQ tối là highlight quan trọng nhất!" />
             <InfoCard emoji="🏆" title="Giải thưởng" desc="Quà tặng & vinh danh cho games. Đêm Gala là đêm của quẩy hết mình!" />
