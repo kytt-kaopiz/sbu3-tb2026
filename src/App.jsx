@@ -293,7 +293,18 @@ function FormPage({ onSuccess }) {
         <div style={{maxWidth:1040,margin:"0 auto"}}>
           <div style={{fontSize:11,letterSpacing:"0.4em",textTransform:"uppercase",color:"#FFB800",marginBottom:14,fontWeight:700,textAlign:"center"}}>Kỷ niệm</div>
           <h2 style={{fontFamily:"Bebas Neue,sans-serif",fontSize:"clamp(34px,6vw,68px)",lineHeight:1,marginBottom:8,textAlign:"center"}}>CHUYẾN ĐI GẦN NHẤT</h2>
-          <p style={{textAlign:"center",color:"rgba(255,248,238,0.5)",fontSize:14,marginBottom:44}}>Những khoảnh khắc đáng nhớ từ Team Building cuối năm 2025</p>
+          <p style={{textAlign:"center",color:"rgba(255,248,238,0.5)",fontSize:14,marginBottom:16}}>Những khoảnh khắc đáng nhớ từ Team Building cuối năm 2025</p>
+          <div style={{textAlign:"center",marginBottom:44}}>
+            <a href="https://drive.google.com/drive/folders/1WWW2woxNqTEvKI1fTY9d07VYXLOzWngV" target="_blank" rel="noopener noreferrer"
+              style={{display:"inline-flex",alignItems:"center",gap:8,padding:"10px 24px",
+                background:"rgba(255,255,255,0.07)",border:"1px solid rgba(77,208,225,0.35)",
+                borderRadius:40,color:"#4DD0E1",fontSize:13,fontWeight:600,letterSpacing:"0.05em",
+                textDecoration:"none"}}
+              onMouseOver={e=>{e.currentTarget.style.background="rgba(77,208,225,0.15)";e.currentTarget.style.borderColor="rgba(77,208,225,0.7)"}}
+              onMouseOut={e=>{e.currentTarget.style.background="rgba(255,255,255,0.07)";e.currentTarget.style.borderColor="rgba(77,208,225,0.35)"}}>
+              📸 Xem toàn bộ ảnh — TBD SBU3 2025
+            </a>
+          </div>
           {/* Video - hoạt động đầy đủ khi deploy (Netlify/Vercel) */}
           <div style={{marginBottom:32,borderRadius:16,overflow:"hidden",position:"relative",paddingBottom:"56.25%",height:0}}>
             <iframe
