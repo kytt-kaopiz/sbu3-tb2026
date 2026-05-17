@@ -348,9 +348,6 @@ function FormPage({ onSuccess }) {
             <div style={{overflow:"hidden",borderRadius:12,minHeight:160}}>
               <img src="/images/IMG_20251227_162055.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",display:"block",transition:"transform 0.4s"}} onMouseOver={e=>e.target.style.transform="scale(1.05)"} onMouseOut={e=>e.target.style.transform="scale(1)"} />
             </div>
-            <div style={{overflow:"hidden",borderRadius:12,minHeight:160}}>
-              <img src="/images/IMG_20251227_162055.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",display:"block",transition:"transform 0.4s"}} onMouseOver={e=>e.target.style.transform="scale(1.05)"} onMouseOut={e=>e.target.style.transform="scale(1)"} />
-            </div>
           </div>
         </div>
       </div>
