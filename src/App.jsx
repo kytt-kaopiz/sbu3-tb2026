@@ -181,12 +181,12 @@ function CountdownTicker() {
 
 // ── FAQ LIST ─────────────────────────────────────────────────────────
 const FAQS = [
-  {q:"Chi phí tham gia là bao nhiêu?", a:"Toàn bộ chi phí (xe, ăn uống, chỗ ở, hoạt động) do công ty chi trả. Anh em chỉ cần mang theo người và tinh thần quẩy!"},
-  {q:"Có cần mang theo đồ gì không?", a:"Quần áo thoải mái cho hoạt động ngoài trời, đồ bơi/tắm, kem chống nắng, thuốc cá nhân nếu cần. BTC sẽ có danh sách chi tiết sau."},
+  {q:"Chi phí tham gia là bao nhiêu?", a:"SBU tài trợ đa số chuyến đi. Chi phí đóng góp mỗi người:\n• Giám đốc / Phó Giám đốc: 1.000.000đ\n• DM: 500.000đ\n• TL / PM / BrSE: 300.000đ\n• Member: 200.000đ\n• Intern: 100.000đ\n• Người thân (người lớn & trẻ em trên 5 tuổi): 1.000.000đ\n• Trẻ em dưới 5 tuổi: Free 🎉"},
+  {q:"Có cần mang theo đồ gì không?", a:"Quần áo thoải mái cho hoạt động ngoài trời, đồ bơi/tắm, kem chống nắng, thuốc cá nhân nếu cần. Còn lại đã có BTC lo ❤️"},
   {q:"Ở lại đêm có bắt buộc không?", a:"Không bắt buộc, nhưng recommend ở lại full 2 ngày để trải nghiệm Gala Dinner & Lửa trại — đây là phần không thể bỏ lỡ!"},
-  {q:"Đăng ký deadline khi nào?", a:"Deadline đăng ký là 20/06/2026. Sau deadline BTC sẽ không thể đảm bảo slot xe và chỗ ở nên anh em đăng ký sớm nhé!"},
-  {q:"Có thể đăng ký cho người thân đi cùng không?", a:"Chuyến này chỉ dành riêng cho thành viên SBU3. Anh em tranh thủ xả stress riêng với team nhé 😄"},
-  {q:"Liên hệ BTC qua đâu nếu có thắc mắc?", a:"Nhắn trực tiếp vào group SBU3 hoặc liên hệ trưởng BTC. Mọi thắc mắc sẽ được giải đáp trong vòng 24h."},
+  {q:"Đăng ký deadline khi nào?", a:"Deadline đăng ký là 17h30 ngày 05/06/2026. Sau deadline BTC sẽ không thể đảm bảo slot xe và chỗ ở nên anh em đăng ký sớm nhé!"},
+  {q:"Có thể đăng ký cho người thân đi cùng không?", a:"Thoải mái! Người thân của thành viên SBU3 cũng sẽ là member của SBU3 ❤️ Các case gia đình muốn ở riêng có thể liên hệ BTC."},
+  {q:"Liên hệ BTC qua đâu nếu có thắc mắc?", a:"Nhắn trực tiếp qua Teams cho KyTT (Phụ trách tổng) hoặc PhuongNT (Mama tổng quản). Mọi thắc mắc sẽ được giải đáp trong vòng 24h."},
 ];
 
 function FaqList() {
@@ -202,7 +202,7 @@ function FaqList() {
             <div style={{color:"#4DD0E1",fontSize:20,flexShrink:0,transition:"transform 0.2s",transform:open===i?"rotate(45deg)":"rotate(0deg)"}}>+</div>
           </div>
           {open===i && (
-            <div style={{padding:"0 24px 20px",fontSize:14,color:"rgba(255,248,238,0.65)",lineHeight:1.7}}>{f.a}</div>
+            <div style={{padding:"0 24px 20px",fontSize:14,color:"rgba(255,248,238,0.65)",lineHeight:1.7}}>{ f.a.split("\n").map((line,i)=><div key={i}>{line}</div>) }</div>
           )}
         </div>
       ))}
@@ -377,7 +377,7 @@ function FormPage({ onSuccess }) {
               {[
                 {icon:"📍",title:"Địa chỉ",desc:"Km 15, đường Tản Viên, xã Minh Quang, Ba Vì, Hà Nội"},
                 {icon:"🚌",title:"Di chuyển",desc:"Xe 29 & 45 chỗ đưa đón. Tập trung tại đơn vị lúc 8:30 sáng 27/06"},
-                {icon:"⏱️",title:"Thời gian",desc:"27/06 – 28/06/2026. Khoảng 2.5 – 3 tiếng từ Hà Nội"},
+                {icon:"⏱️",title:"Thời gian",desc:"27/06 – 28/06/2026. Đi tầm ~1 tiếng từ Kaopiz Software"},
                 {icon:"🏕️",title:"Khu vực",desc:"Resort sinh thái ven hồ Cẩm Quỳ, không khí trong lành, xanh mát"},
               ].map(({icon,title,desc})=>(
                 <div key={title} style={{display:"flex",gap:16,padding:"16px 20px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(77,208,225,0.15)",borderRadius:12}}>
@@ -388,7 +388,7 @@ function FormPage({ onSuccess }) {
                   </div>
                 </div>
               ))}
-              <a href="https://maps.app.goo.gl/SonTinhCamp" target="_blank" rel="noopener noreferrer"
+              <a href="https://maps.app.goo.gl/quaWGT95YCGXAHQ4A" target="_blank" rel="noopener noreferrer"
                 style={{display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,padding:"14px 28px",
                   background:"linear-gradient(135deg,#29B6F6,#0288D1)",borderRadius:40,
                   color:"white",fontWeight:700,fontSize:14,textDecoration:"none",marginTop:4}}>
@@ -507,7 +507,7 @@ function FormPage({ onSuccess }) {
           <div style={{fontSize:11,letterSpacing:"0.4em",textTransform:"uppercase",color:"#FFB800",marginBottom:14,fontWeight:700}}>Đăng ký tham gia</div>
           <h2 style={{fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontWeight:900,fontSize:"clamp(34px,6vw,64px)",lineHeight:1,marginBottom:12}}>ĐIỀN FORM —<br />LÊN ĐƯỜNG THÔI! 🔥</h2>
           <p style={{color:"rgba(255,248,238,0.6)",fontSize:15,lineHeight:1.7,marginBottom:44}}>
-            Deadline đăng ký: <strong style={{color:"#FFB800"}}>20/06/2026</strong>
+            Deadline đăng ký: <strong style={{color:"#FFB800"}}>17h30 ngày 05/06/2026</strong>
           </p>
 
           <div style={{marginBottom:24}}>
@@ -582,7 +582,7 @@ function FormPage({ onSuccess }) {
 
 
       <div style={{background:"#082840",textAlign:"center",padding:"36px 24px",borderTop:"1px solid rgba(255,255,255,0.06)",fontSize:13,color:"rgba(255,255,255,0.3)"}}>
-        <div>Tổ chức bởi <strong style={{color:"#FFB800"}}>SBU3 Team Building Committee 2026</strong></div>
+        <div>Tổ chức bởi <strong style={{color:"#FFB800"}}>SBU3 Team Building Committee 2026</strong> · KyTT (Phụ trách tổng) · PhuongNT (Mama tổng quản)</div>
         <div style={{marginTop:6}}>Liên hệ: <strong style={{color:"#FFB800"}}>KyTT</strong> (Phụ trách tổng) — <strong style={{color:"#FFB800"}}>ChiVTM</strong> (Tài chính)</div>
         <div style={{marginTop:6,fontSize:11,opacity:0.5}}>Sơn Tinh Camp, Ba Vì · 27–28/06/2026</div>
       </div>
