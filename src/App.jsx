@@ -581,10 +581,18 @@ function FormPage({ onSuccess }) {
       </div>
 
 
-      <div style={{background:"#082840",textAlign:"center",padding:"36px 24px",borderTop:"1px solid rgba(255,255,255,0.06)",fontSize:13,color:"rgba(255,255,255,0.3)"}}>
-        <div>Tổ chức bởi <strong style={{color:"#FFB800"}}>SBU3 Team Building Committee 2026</strong> · KyTT (Phụ trách tổng) · PhuongNT (Mama tổng quản)</div>
-        <div style={{marginTop:6}}>Liên hệ: <strong style={{color:"#FFB800"}}>KyTT</strong> (Phụ trách tổng) — <strong style={{color:"#FFB800"}}>ChiVTM</strong> (Tài chính)</div>
-        <div style={{marginTop:6,fontSize:11,opacity:0.5}}>Sơn Tinh Camp, Ba Vì · 27–28/06/2026</div>
+      <div style={{background:"#082840",textAlign:"center",padding:"40px 24px",borderTop:"1px solid rgba(255,255,255,0.06)",fontSize:13,color:"rgba(255,255,255,0.35)"}}>
+        <div style={{fontWeight:700,color:"rgba(255,255,255,0.6)",marginBottom:16,fontSize:14}}>
+          Tổ chức bởi <span style={{color:"#FFB800"}}>SBU3 — Biệt Đội Kiến Tạo Niềm Vui 2026</span>
+        </div>
+        <div style={{display:"inline-grid",gridTemplateColumns:"auto auto",gap:"6px 32px",textAlign:"left",marginBottom:16}}>
+          <span style={{color:"rgba(255,255,255,0.4)"}}>Phụ trách tổng</span><span style={{color:"#4DD0E1"}}>KyTT</span>
+          <span style={{color:"rgba(255,255,255,0.4)"}}>Finance</span><span style={{color:"#4DD0E1"}}>ChiVTM</span>
+          <span style={{color:"rgba(255,255,255,0.4)"}}>Media</span><span style={{color:"#4DD0E1"}}>PhuongNT / PhucNT</span>
+          <span style={{color:"rgba(255,255,255,0.4)"}}>Logistic</span><span style={{color:"#4DD0E1"}}>HungLQ / AnhHT1</span>
+          <span style={{color:"rgba(255,255,255,0.4)"}}>F&amp;B</span><span style={{color:"#4DD0E1"}}>NgocNA / ThuTH / ThuyNT1</span>
+        </div>
+        <div style={{fontSize:11,opacity:0.4}}>Sơn Tinh Camp, Ba Vì · 27–28/06/2026</div>
       </div>
     </div>
   );
