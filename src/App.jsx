@@ -37,7 +37,7 @@ const css = `
   }
   input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
   input:focus, textarea:focus, select:focus {
-    border-color: #29B6F6 !important;
+    border-color: #29B6F6 !important; box-shadow: 0 0 0 3px rgba(41,182,246,0.2);
     background: rgba(41,182,246,0.07) !important;
     box-shadow: 0 0 0 3px rgba(41,182,246,0.15) !important;
     outline: none;
@@ -105,9 +105,11 @@ function TItem({ time, title, desc }) {
 
 function FLabel({ text, req, error }) {
   return (
-    <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:"rgba(255,248,238,0.55)",marginBottom:9}}>
-      {text} {req && <span style={{color:"#29B6F6"}}>*</span>}
-      {error && <span style={{color:"#29B6F6",marginLeft:8,fontSize:10,textTransform:"none",fontWeight:400}}>— {error}</span>}
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:9}}>
+      <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.2em",textTransform:"uppercase",color:error?"#FF6B6B":"rgba(255,248,238,0.55)",transition:"color 0.2s"}}>
+        {text} {req && <span style={{color:error?"#FF6B6B":"#29B6F6"}}>*</span>}
+      </span>
+      {error && <span style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:11,fontWeight:600,color:"#FF6B6B"}}>⚠ {error}</span>}
     </div>
   );
 }
@@ -225,11 +227,42 @@ function FormPage({ onSuccess }) {
 
   const validate = () => {
     const e = {};
-    if (!form.fullname.trim()) e.fullname = "Bắt buộc";
-    if (!form.email.includes("@")) e.email = "Email không hợp lệ";
-    if (!form.phone.trim()) e.phone = "Bắt buộc";
+    const name = form.fullname.trim();
+    if (!name) e.fullname = "Bắt buộc";
+    else if (name.length < 2) e.fullname = "Tên quá ngắn";
+    else if (/[0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?]/.test(name)) e.fullname = "Tên không hợp lệ";
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!form.email.trim()) e.email = "Bắt buộc";
+    else if (!emailReg.test(form.email.trim())) e.email = "Email không đúng định dạng";
+    const phone = form.phone.trim().replace(/\s/g,"");
+    if (!phone) e.phone = "Bắt buộc";
+    else if (!/^0\d{9}$/.test(phone)) e.phone = "SĐT phải 10 số, bắt đầu bằng 0";
     if (!form.attend) e.attend = "Chưa chọn";
     return e;
+  };
+
+  const validateField = (k, v) => {
+    const val = typeof v === "string" ? v.trim() : v;
+    if (k === "fullname") {
+      if (!val) return "Bắt buộc";
+      if (val.length < 2) return "Tên quá ngắn";
+      if (/[0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?]/.test(val)) return "Tên không hợp lệ";
+    }
+    if (k === "email") {
+      if (!val) return "Bắt buộc";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) return "Email không đúng định dạng";
+    }
+    if (k === "phone") {
+      const p = (v||"").trim().replace(/\s/g,"");
+      if (!p) return "Bắt buộc";
+      if (!/^0\d{9}$/.test(p)) return "SĐT phải 10 số, bắt đầu bằng 0";
+    }
+    return "";
+  };
+
+  const blur = (k) => {
+    const err = validateField(k, form[k]);
+    setErrors(e => ({...e, [k]: err}));
   };
 
   const submit = async () => {
@@ -258,8 +291,9 @@ function FormPage({ onSuccess }) {
   const iStyle = (f) => ({
     width:"100%", fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif", fontSize:15,
     padding:"13px 16px", borderRadius:8, color:"#FFF8EE",
-    background: errors[f] ? "rgba(41,182,246,0.1)" : "rgba(255,255,255,0.05)",
-    border:"1px solid "+(errors[f] ? "#29B6F6" : "rgba(255,255,255,0.13)"),
+    background: errors[f] ? "rgba(255,107,107,0.08)" : "rgba(255,255,255,0.05)",
+    border:"1px solid "+(errors[f] ? "#FF6B6B" : "rgba(255,255,255,0.13)"),
+    boxShadow: errors[f] ? "0 0 0 3px rgba(255,107,107,0.15)" : "none",
     outline:"none", transition:"all 0.2s",
   });
 
@@ -512,17 +546,17 @@ function FormPage({ onSuccess }) {
 
           <div style={{marginBottom:24}}>
             <FLabel text="Họ và tên" req error={errors.fullname} />
-            <input value={form.fullname} onChange={e=>set("fullname",e.target.value)} placeholder="Nguyễn Văn A" style={iStyle("fullname")} />
+            <input value={form.fullname} onChange={e=>set("fullname",e.target.value)} onBlur={()=>blur("fullname")} placeholder="Nguyễn Văn A" style={iStyle("fullname")} />
           </div>
 
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,marginBottom:24}}>
             <div>
               <FLabel text="Email" req error={errors.email} />
-              <input type="email" value={form.email} onChange={e=>set("email",e.target.value)} placeholder="ten@company.com" style={iStyle("email")} />
+              <input type="email" value={form.email} onChange={e=>set("email",e.target.value)} onBlur={()=>blur("email")} placeholder="ten@kaopiz.com" style={iStyle("email")} />
             </div>
             <div>
               <FLabel text="Số điện thoại" req error={errors.phone} />
-              <input type="tel" value={form.phone} onChange={e=>set("phone",e.target.value)} placeholder="09xx xxx xxx" style={iStyle("phone")} />
+              <input type="tel" value={form.phone} onChange={e=>set("phone",e.target.value)} onBlur={()=>blur("phone")} placeholder="09xx xxx xxx" style={iStyle("phone")} />
             </div>
           </div>
 
@@ -836,7 +870,7 @@ function AdminPage({ onBack }) {
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
               <thead>
                 <tr style={{background:"rgba(14,77,117,0.8)"}}>
-                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Lưu ý",""].map(h=>(
+                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Lưu ý","Lời nhắn",""].map(h=>(
                     <th key={h} style={{padding:"13px 16px",textAlign:"left",color:"#FFB800",fontWeight:700,letterSpacing:"0.06em",borderBottom:"2px solid rgba(255,184,0,0.3)",whiteSpace:"nowrap",fontSize:12}}>{h}</th>
                   ))}
                 </tr>
@@ -866,6 +900,7 @@ function AdminPage({ onBack }) {
                     </td>
                     <td style={{padding:"12px 16px",whiteSpace:"nowrap",color:"rgba(255,255,255,0.6)",fontSize:12}}>{nMap[r.overnight]||"—"}</td>
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:160,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.notes}>{r.notes||"—"}</td>
+                    <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:180,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.message}>{r.message||"—"}</td>
                     <td style={{padding:"12px 16px",whiteSpace:"nowrap"}}>
                       <button onClick={()=>startEdit(r,i)} style={{marginRight:6,padding:"4px 10px",background:"rgba(255,184,0,0.15)",border:"1px solid rgba(255,184,0,0.3)",borderRadius:5,color:"#FFB800",fontSize:11,cursor:"pointer",fontWeight:700}}>Sửa</button>
                       <button onClick={()=>setConfirmId(r.id)} style={{padding:"4px 10px",background:"rgba(255,100,80,0.15)",border:"1px solid rgba(255,100,80,0.3)",borderRadius:5,color:"#FF7A5C",fontSize:11,cursor:"pointer",fontWeight:700}}>Xóa</button>
