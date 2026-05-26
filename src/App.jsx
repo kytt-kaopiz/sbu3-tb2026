@@ -152,6 +152,64 @@ function Check({ value, label, checked, onToggle }) {
   );
 }
 
+// ── COUNTDOWN TICKER ────────────────────────────────────────────────
+function CountdownTicker() {
+  const [now, setNow] = useState(new Date());
+  useEffect(()=>{
+    const t = setInterval(()=>setNow(new Date()), 1000);
+    return ()=>clearInterval(t);
+  },[]);
+  const target = new Date("2026-06-27T08:30:00");
+  const diff = target - now;
+  if(diff <= 0) return null;
+  const days  = Math.floor(diff/86400000);
+  const hours = Math.floor((diff%86400000)/3600000);
+  const mins  = Math.floor((diff%3600000)/60000);
+  const secs  = Math.floor((diff%60000)/1000);
+  const items = [{v:days,l:"Ngày"},{v:hours,l:"Giờ"},{v:mins,l:"Phút"},{v:secs,l:"Giây"}];
+  return (
+    <div style={{display:"flex",justifyContent:"center",gap:16,flexWrap:"wrap"}}>
+      {items.map(({v,l})=>(
+        <div key={l} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(77,208,225,0.25)",borderRadius:16,padding:"24px 32px",minWidth:100}}>
+          <div style={{fontFamily:"Calibri,sans-serif",fontWeight:900,fontSize:"clamp(36px,6vw,72px)",color:"#4DD0E1",lineHeight:1}}>{String(v).padStart(2,"0")}</div>
+          <div style={{fontSize:12,color:"rgba(255,248,238,0.45)",letterSpacing:"0.2em",textTransform:"uppercase",marginTop:8}}>{l}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── FAQ LIST ─────────────────────────────────────────────────────────
+const FAQS = [
+  {q:"Chi phí tham gia là bao nhiêu?", a:"Toàn bộ chi phí (xe, ăn uống, chỗ ở, hoạt động) do công ty chi trả. Anh em chỉ cần mang theo người và tinh thần quẩy!"},
+  {q:"Có cần mang theo đồ gì không?", a:"Quần áo thoải mái cho hoạt động ngoài trời, đồ bơi/tắm, kem chống nắng, thuốc cá nhân nếu cần. BTC sẽ có danh sách chi tiết sau."},
+  {q:"Ở lại đêm có bắt buộc không?", a:"Không bắt buộc, nhưng recommend ở lại full 2 ngày để trải nghiệm Gala Dinner & Lửa trại — đây là phần không thể bỏ lỡ!"},
+  {q:"Đăng ký deadline khi nào?", a:"Deadline đăng ký là 20/06/2026. Sau deadline BTC sẽ không thể đảm bảo slot xe và chỗ ở nên anh em đăng ký sớm nhé!"},
+  {q:"Có thể đăng ký cho người thân đi cùng không?", a:"Chuyến này chỉ dành riêng cho thành viên SBU3. Anh em tranh thủ xả stress riêng với team nhé 😄"},
+  {q:"Liên hệ BTC qua đâu nếu có thắc mắc?", a:"Nhắn trực tiếp vào group SBU3 hoặc liên hệ trưởng BTC. Mọi thắc mắc sẽ được giải đáp trong vòng 24h."},
+];
+
+function FaqList() {
+  const [open, setOpen] = useState(null);
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      {FAQS.map((f,i)=>(
+        <div key={i} onClick={()=>setOpen(open===i?null:i)}
+          style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(77,208,225,"+(open===i?"0.4":"0.12")+")",
+            borderRadius:12,overflow:"hidden",cursor:"pointer",transition:"all 0.2s"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"18px 24px",gap:16}}>
+            <div style={{fontWeight:700,fontSize:15,color: open===i ? "#4DD0E1" : "#FFF8EE"}}>{f.q}</div>
+            <div style={{color:"#4DD0E1",fontSize:20,flexShrink:0,transition:"transform 0.2s",transform:open===i?"rotate(45deg)":"rotate(0deg)"}}>+</div>
+          </div>
+          {open===i && (
+            <div style={{padding:"0 24px 20px",fontSize:14,color:"rgba(255,248,238,0.65)",lineHeight:1.7}}>{f.a}</div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ── FORM PAGE ────────────────────────────────────────────────────────
 function FormPage({ onSuccess }) {
   const [form, setForm] = useState({
@@ -248,6 +306,17 @@ function FormPage({ onSuccess }) {
         </button>
       </div>
 
+      {/* COUNTDOWN */}
+      <div style={{background:"linear-gradient(135deg,#071E30 0%,#0A2E48 100%)",padding:"56px 32px",borderTop:"1px solid rgba(77,208,225,0.1)"}}>
+        <div style={{maxWidth:800,margin:"0 auto",textAlign:"center"}}>
+          <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.4em",textTransform:"uppercase",color:"#FFB800",marginBottom:12}}>Đếm ngược</div>
+          <h2 style={{fontFamily:"Calibri,sans-serif",fontWeight:900,fontSize:"clamp(28px,4vw,48px)",marginBottom:40,color:"#FFF8EE"}}>
+            ⚡ NGÀY LÊN ĐƯỜNG
+          </h2>
+          <CountdownTicker />
+        </div>
+      </div>
+
       {/* INFO */}
       <div style={{background:"linear-gradient(135deg,#0E4D75 0%,#0B5E8A 100%)",padding:"72px 32px"}}>
         <div style={{maxWidth:1040,margin:"0 auto"}}>
@@ -283,6 +352,75 @@ function FormPage({ onSuccess }) {
               <div style={{fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontWeight:900,fontSize:28,color:"#29B6F6",paddingBottom:12,marginBottom:18,borderBottom:"2px solid rgba(41,182,246,0.3)"}}>Ngày 2 — 28/06</div>
               <TItem time="08:00–09:00" title="Ăn sáng" desc="Bữa sáng nhẹ nhàng, hít thở không khí trong lành" />
               <TItem time="09:30–11:00" title="Kết thúc & Về Hà Nội" desc="Thu dọn đồ đạc, lên xe, kết thúc hành trình đáng nhớ!" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* BẢN ĐỒ */}
+      <div style={{background:"linear-gradient(135deg,#082840 0%,#0A3A58 100%)",padding:"72px 32px"}}>
+        <div style={{maxWidth:1040,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:44}}>
+            <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.4em",textTransform:"uppercase",color:"#FFB800",marginBottom:12}}>Địa điểm</div>
+            <h2 style={{fontFamily:"Calibri,sans-serif",fontWeight:900,fontSize:"clamp(28px,5vw,56px)",marginBottom:8,color:"#FFF8EE"}}>🗺️ SƠN TINH CAMP</h2>
+            <p style={{color:"rgba(255,248,238,0.5)",fontSize:14}}>Km 15, đường Tản Viên, xã Minh Quang, Ba Vì, Hà Nội</p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
+            <div style={{borderRadius:16,overflow:"hidden",height:340,boxShadow:"0 8px 32px rgba(0,0,0,0.4)"}}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.123456789!2d105.3661!3d21.1234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3134f123456789ab%3A0x123456789abcdef0!2zU8ahbiBUaW5oIENhbXA!5e0!3m2!1svi!2svn!4v1234567890"
+                width="100%" height="100%" style={{border:0,display:"block"}} allowFullScreen loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:16,justifyContent:"center"}}>
+              {[
+                {icon:"📍",title:"Địa chỉ",desc:"Km 15, đường Tản Viên, xã Minh Quang, Ba Vì, Hà Nội"},
+                {icon:"🚌",title:"Di chuyển",desc:"Xe 29 & 45 chỗ đưa đón. Tập trung tại đơn vị lúc 8:30 sáng 27/06"},
+                {icon:"⏱️",title:"Thời gian",desc:"27/06 – 28/06/2026. Khoảng 2.5 – 3 tiếng từ Hà Nội"},
+                {icon:"🏕️",title:"Khu vực",desc:"Resort sinh thái ven hồ Cẩm Quỳ, không khí trong lành, xanh mát"},
+              ].map(({icon,title,desc})=>(
+                <div key={title} style={{display:"flex",gap:16,padding:"16px 20px",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(77,208,225,0.15)",borderRadius:12}}>
+                  <span style={{fontSize:24,flexShrink:0}}>{icon}</span>
+                  <div>
+                    <div style={{fontWeight:700,color:"#4DD0E1",marginBottom:4,fontSize:14}}>{title}</div>
+                    <div style={{fontSize:13,color:"rgba(255,248,238,0.6)",lineHeight:1.5}}>{desc}</div>
+                  </div>
+                </div>
+              ))}
+              <a href="https://maps.app.goo.gl/SonTinhCamp" target="_blank" rel="noopener noreferrer"
+                style={{display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,padding:"14px 28px",
+                  background:"linear-gradient(135deg,#29B6F6,#0288D1)",borderRadius:40,
+                  color:"white",fontWeight:700,fontSize:14,textDecoration:"none",marginTop:4}}>
+                🗺️ Mở Google Maps
+              </a>
+            </div>
+          </div>
+          {/* Ảnh Sơn Tinh Camp */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginTop:28}}>
+            <div style={{overflow:"hidden",borderRadius:12,height:160}}>
+              <img src="https://cdn.justfly.vn/800x600/media/202401/02/1704166549-justfly-khu-cam-trai-son-tinh-camp-ba-vi-hanoi.jpg" alt="Hồ Đồng Mô"
+                style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 0.4s"}}
+                onMouseOver={e=>e.target.style.transform="scale(1.07)"}
+                onMouseOut={e=>e.target.style.transform="scale(1)"} />
+            </div>
+            <div style={{overflow:"hidden",borderRadius:12,height:160}}>
+              <img src="https://cdn.justfly.vn/800x600/media/202401/02/1704166558-justfly-khu-cam-trai-son-tinh-camp-ba-vi-hanoi5.jpg" alt="Không gian xanh"
+                style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 0.4s"}}
+                onMouseOver={e=>e.target.style.transform="scale(1.07)"}
+                onMouseOut={e=>e.target.style.transform="scale(1)"} />
+            </div>
+            <div style={{overflow:"hidden",borderRadius:12,height:160}}>
+              <img src="https://cdn.justfly.vn/800x600/media/202111/02/1635838209-khu-cam-trai-son-tinh-camp-du-lich-gan-ha-noi-3.jpg" alt="Khu vui chơi"
+                style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 0.4s"}}
+                onMouseOver={e=>e.target.style.transform="scale(1.07)"}
+                onMouseOut={e=>e.target.style.transform="scale(1)"} />
+            </div>
+            <div style={{overflow:"hidden",borderRadius:12,height:160}}>
+              <img src="https://cdn.justfly.vn/800x600/media/202401/02/1704166565-justfly-khu-cam-trai-son-tinh-camp-ba-vi-hanoi10.jpg" alt="Lửa trại"
+                style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 0.4s"}}
+                onMouseOver={e=>e.target.style.transform="scale(1.07)"}
+                onMouseOut={e=>e.target.style.transform="scale(1)"} />
             </div>
           </div>
         </div>
@@ -349,6 +487,17 @@ function FormPage({ onSuccess }) {
               <img src="/images/IMG_20251227_162055.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",display:"block",transition:"transform 0.4s"}} onMouseOver={e=>e.target.style.transform="scale(1.05)"} onMouseOut={e=>e.target.style.transform="scale(1)"} />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* FAQ */}
+      <div style={{background:"linear-gradient(180deg,#071E30 0%,#082840 100%)",padding:"72px 32px"}}>
+        <div style={{maxWidth:760,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:48}}>
+            <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.4em",textTransform:"uppercase",color:"#FFB800",marginBottom:12}}>Giải đáp</div>
+            <h2 style={{fontFamily:"Calibri,sans-serif",fontWeight:900,fontSize:"clamp(28px,5vw,52px)",color:"#FFF8EE"}}>🎯 CÂU HỎI THƯỜNG GẶP</h2>
+          </div>
+          <FaqList />
         </div>
       </div>
 
