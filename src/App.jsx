@@ -1169,19 +1169,6 @@ function AdminPage({ onBack }) {
                   placeholder="Danh sách người thân..." style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",resize:"vertical"}} />
               )}
             </div>
-            <div style={{marginBottom:16}}>
-              <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Người thân đi cùng</div>
-              <select value={editing.data.hasGuests||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,hasGuests:e.target.value}}))}
-                style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",appearance:"none",marginBottom:8}}>
-                <option value="">Chưa chọn</option>
-                <option value="yes">Có người thân</option>
-                <option value="no">Không</option>
-              </select>
-              {editing.data.hasGuests==="yes" && (
-                <textarea value={editing.data.guests||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,guests:e.target.value}}))} rows={3}
-                  placeholder="Danh sách người thân..." style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",resize:"vertical"}} />
-              )}
-            </div>
             <div style={{marginBottom:24}}>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Dị ứng / Lưu ý</div>
               <textarea value={editing.data.notes||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,notes:e.target.value}}))} rows={2}
