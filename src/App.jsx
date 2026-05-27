@@ -290,6 +290,7 @@ function FormPage({ onSuccess }) {
     if (k === "fullname") {
       if (!val) return "Bắt buộc";
       if (val.length < 2) return "Tên quá ngắn";
+      if (val.length > 50) return "Tên tối đa 50 ký tự";
       if (/[0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?]/.test(val)) return "Tên không hợp lệ";
     }
     if (k === "email") {
@@ -661,7 +662,7 @@ function FormPage({ onSuccess }) {
 
           <div style={{marginBottom:24}}>
             <FLabel text="Họ và tên" req error={errors.fullname} />
-            <input value={form.fullname} onChange={e=>set("fullname",e.target.value)} onBlur={()=>blur("fullname")} placeholder="Nguyễn Văn A" style={iStyle("fullname")} />
+            <input value={form.fullname} onChange={e=>set("fullname",e.target.value)} onBlur={()=>blur("fullname")} placeholder="Nguyễn Văn A" maxLength={50} style={iStyle("fullname")} />
           </div>
 
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,marginBottom:24}}>
@@ -1094,7 +1095,7 @@ function AdminPage({ onBack }) {
             ].map(([lbl,key,type])=>(
               <div key={key} style={{marginBottom:16}}>
                 <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>{lbl}</div>
-                <input type={type} value={editing.data[key]||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,[key]:e.target.value}}))}
+                <input type={type} value={editing.data[key]||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,[key]:e.target.value}}))} maxLength={key==="fullname"?50:undefined}
                   style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none"}} />
               </div>
             ))}
