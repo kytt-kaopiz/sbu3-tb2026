@@ -215,11 +215,11 @@ function FaqList() {
 // ── PAID LIST ────────────────────────────────────────────────────────
 function PaidList() {
   const [rows, setRows] = useState(null);
+  const load = () => fetch("/api/registrations").then(r=>r.json()).then(data=>setRows(data||[])).catch(()=>setRows([]));
   useEffect(()=>{
-    fetch("/api/registrations")
-      .then(r=>r.json())
-      .then(data=>setRows(data||[]))
-      .catch(()=>setRows([]));
+    load();
+    const t = setInterval(load, 30000);
+    return ()=>clearInterval(t);
   },[]);
   if (!rows || rows.length === 0) return null;
   const ATTEND_MAP = {yes:"✅ Đi"};
