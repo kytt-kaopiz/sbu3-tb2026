@@ -216,8 +216,9 @@ function FaqList() {
 function PaidList() {
   const [rows, setRows] = useState(null);
   useEffect(()=>{
-    window.storage.get("tb2026_registrations")
-      .then(r=>setRows(JSON.parse(r?.value||"[]")))
+    fetch("/api/registrations")
+      .then(r=>r.json())
+      .then(data=>setRows(data||[]))
       .catch(()=>setRows([]));
   },[]);
   if (!rows || rows.length === 0) return null;
@@ -314,7 +315,7 @@ function FormPage({ onSuccess }) {
     setLoading(true);
     try {
       let existing = [];
-      try { const r = await window.storage.get(STORAGE_KEY); existing = JSON.parse(r.value || "[]"); } catch(_) {}
+      try { const r = await fetch("/api/registrations"); existing = await r.json(); } catch(_) {}
       const entry = {
         id: Date.now(),
         time: new Date().toLocaleString("vi-VN"),
@@ -323,7 +324,11 @@ function FormPage({ onSuccess }) {
         attend: form.attend, overnight: form.overnight,
         highlights: form.highlights.join(", "), notes: form.notes, message: form.message,
       };
-      await window.storage.set(STORAGE_KEY, JSON.stringify([...existing, entry]));
+      await fetch("/api/registrations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(entry),
+      });
       onSuccess(form.fullname);
     } catch(err) {
       alert("Lỗi lưu dữ liệu, thử lại nhé!");
@@ -784,18 +789,19 @@ function AdminPage({ onBack }) {
   const [confirmId, setConfirmId] = useState(null);
 
   useEffect(() => {
-    window.storage.get(STORAGE_KEY)
-      .then(r => setRows(JSON.parse(r.value || "[]")))
+    fetch("/api/registrations")
+      .then(r => r.json())
+      .then(data => setRows(data || []))
       .catch(() => setRows([]));
   }, []);
 
   const saveRows = async (newRows) => {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(newRows));
     setRows(newRows);
   };
 
   const deleteRow = async (id) => {
-    await saveRows((rows||[]).filter(r => r.id !== id));
+    await fetch(`/api/registrations?id=${id}`, { method: "DELETE" });
+    setRows(rows.filter(r => r.id !== id));
     setConfirmId(null);
     showToast("Đã xóa!");
   };
@@ -1002,8 +1008,14 @@ function AdminPage({ onBack }) {
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:180,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.message}>{r.message||"—"}</td>
                     <td style={{padding:"12px 16px",whiteSpace:"nowrap",textAlign:"center"}}>
                       <button onClick={async()=>{
-                        const newRows=(rows||[]).map(x=>x.id===r.id?{...x,paid:!x.paid}:x);
-                        await saveRows(newRows);
+                        const updated = {...r, paid: !r.paid};
+                        await fetch("/api/registrations", {
+                          method: "PUT",
+                          headers: {"Content-Type":"application/json"},
+                          body: JSON.stringify(updated),
+                        });
+                        const newRows=(rows||[]).map(x=>x.id===r.id?updated:x);
+                        setRows(newRows);
                         showToast(r.paid?"Đã bỏ xác nhận!":"✅ Đã đánh dấu đóng tiền!");
                       }} style={{
                         padding:"5px 12px",borderRadius:20,fontSize:12,fontWeight:700,cursor:"pointer",border:"none",
