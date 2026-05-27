@@ -304,8 +304,19 @@ function FormPage({ onSuccess }) {
     return "";
   };
 
-  const blur = (k) => {
-    const err = validateField(k, form[k]);
+  const blur = async (k) => {
+    let err = validateField(k, form[k]);
+    if (!err && (k === "email" || k === "phone")) {
+      try {
+        const res = await fetch("/api/registrations");
+        const existing = await res.json();
+        const val = form[k].trim().toLowerCase();
+        const dup = existing.find(r => 
+          k === "email" ? r.email?.toLowerCase() === val : r.phone?.replace(/\s/g,"") === val.replace(/\s/g,"")
+        );
+        if (dup) err = k === "email" ? "Email này đã đăng ký rồi!" : "SĐT này đã đăng ký rồi!";
+      } catch(_) {}
+    }
     setErrors(e => ({...e, [k]: err}));
   };
 
@@ -1070,7 +1081,6 @@ function AdminPage({ onBack }) {
             <div style={{fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontWeight:900,fontSize:28,color:"#FFB800",marginBottom:24}}>CHỈNH SỬA THÔNG TIN</div>
             {[
               ["Họ và tên","fullname","text"],
-              ["Tên thân mật","nickname","text"],
               ["Email","email","email"],
               ["Số điện thoại","phone","tel"],
             ].map(([lbl,key,type])=>(
@@ -1080,6 +1090,19 @@ function AdminPage({ onBack }) {
                   style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none"}} />
               </div>
             ))}
+            <div style={{marginBottom:16}}>
+              <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:10}}>Đóng tiền</div>
+              <div style={{display:"flex",gap:10}}>
+                {[["✅ Đã đóng tiền",true],["⏳ Chưa đóng",false]].map(([lbl,val])=>(
+                  <div key={lbl} onClick={()=>setEditing(ed=>({...ed,data:{...ed.data,paid:val}}))}
+                    style={{flex:1,padding:"10px 14px",borderRadius:8,cursor:"pointer",textAlign:"center",fontSize:13,fontWeight:700,transition:"all 0.2s",
+                      background: editing.data.paid===val ? (val?"rgba(41,182,246,0.25)":"rgba(255,107,107,0.15)") : "rgba(255,255,255,0.05)",
+                      border: editing.data.paid===val ? ("1px solid "+(val?"#4DD0E1":"#FF6B6B")) : "1px solid rgba(255,255,255,0.1)",
+                      color: editing.data.paid===val ? (val?"#4DD0E1":"#FF6B6B") : "rgba(255,255,255,0.4)",
+                    }}>{lbl}</div>
+                ))}
+              </div>
+            </div>
             <div style={{marginBottom:16}}>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Tham gia</div>
               <select value={editing.data.attend||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,attend:e.target.value}}))}
