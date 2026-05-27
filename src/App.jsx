@@ -775,15 +775,15 @@ function SuccessPage({ name, onBack }) {
     <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0B3D5E,#0E5A8A)",display:"flex",alignItems:"center",justifyContent:"center",padding:24,fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif"}}>
       <style>{css}</style>
       <div style={{background:"rgba(13,78,117,0.9)",border:"1px solid rgba(77,208,225,0.4)",borderRadius:24,padding:"52px 44px",textAlign:"center",maxWidth:440,animation:"popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)"}}>
-        <div style={{fontSize:68,marginBottom:20}}>🎉</div>
-        <div style={{fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontWeight:900,fontSize:44,color:"#FFB800",marginBottom:14}}>ĐĂNG KÝ THÀNH CÔNG!</div>
+        <div style={{fontSize:68,marginBottom:20}}>⚡</div>
+        <div style={{fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontWeight:900,fontSize:40,color:"#FFB800",marginBottom:14}}>ĐĂNG KÝ THÀNH CÔNG!</div>
         <p style={{fontSize:16,color:"rgba(255,248,238,0.8)",lineHeight:1.75}}>
-          Chào mừng chiến binh <strong style={{color:"#FFB800"}}>{name}</strong> đã chính thức gia nhập<br />
-          <strong>BIỆT ĐỘI KIẾN TẠO NIỀM VUI!</strong><br /><br />
-          Chuẩn bị tinh thần — <span style={{color:"#29B6F6"}}>27/06 lên đường thôi! 🔥</span>
+          Chào mừng <strong style={{color:"#FFB800"}}>{name}</strong> gia nhập<br />
+          <strong style={{color:"#4DD0E1"}}>SBU3 — Trạm Sạc Năng Lượng! ⚡</strong><br /><br />
+          Chuẩn bị tinh thần — <span style={{color:"#29B6F6"}}>27/06 lên đường thôi! 🚀</span>
         </p>
-        <button onClick={onBack} style={{marginTop:28,padding:"12px 40px",border:"1px solid #29B6F6",borderRadius:6,color:"#29B6F6",background:"transparent",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,fontWeight:700,letterSpacing:"0.1em",cursor:"pointer"}}>
-          Đăng ký thêm
+        <button onClick={()=>window.location.href="/"} style={{marginTop:28,padding:"14px 40px",background:"linear-gradient(135deg,#29B6F6,#0288D1)",border:"none",borderRadius:8,color:"white",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:15,fontWeight:700,letterSpacing:"0.05em",cursor:"pointer"}}>
+          🏠 Trở về trang chủ
         </button>
       </div>
     </div>
