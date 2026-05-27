@@ -260,7 +260,7 @@ function PaidList() {
 function FormPage({ onSuccess }) {
   const [form, setForm] = useState({
     fullname:"", nickname:"", email:"", phone:"",
-    department:"", attend:"", overnight:"",
+    department:"", attend:"", overnight:"", hasGuests:"", guests:"", hasGuests:"", guests:"",
     highlights:[], notes:"", message:"",
   });
   const [errors, setErrors] = useState({});
@@ -333,7 +333,7 @@ function FormPage({ onSuccess }) {
         time: new Date().toLocaleString("vi-VN"),
         fullname: form.fullname, nickname: form.nickname,
         email: form.email, phone: form.phone, department: form.department,
-        attend: form.attend, overnight: form.overnight,
+        attend: form.attend, overnight: form.overnight, hasGuests: form.hasGuests, guests: form.guests, hasGuests: form.hasGuests, guests: form.guests,
         highlights: form.highlights.join(", "), notes: form.notes, message: form.message,
       };
       await fetch("/api/registrations", {
@@ -699,6 +699,27 @@ function FormPage({ onSuccess }) {
             </div>
           )}
 
+
+          <div style={{marginBottom:24}}>
+            <FLabel text="Bạn có đem người thân đi cùng không?" />
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              <Radio value="yes" label="👨‍👩‍👧 Có, tôi sẽ đem theo người thân" selected={form.hasGuests==="yes"} onSelect={v=>set("hasGuests",v)} />
+              <Radio value="no" label="🙋 Không, chỉ mình tôi thôi" selected={form.hasGuests==="no"} onSelect={v=>set("hasGuests",v)} />
+            </div>
+          </div>
+
+          {form.hasGuests==="yes" && (
+            <div style={{marginBottom:24,padding:"20px",background:"rgba(255,184,0,0.07)",border:"1px solid rgba(255,184,0,0.2)",borderRadius:12}}>
+              <FLabel text="Danh sách người thân đi cùng" />
+              <textarea value={form.guests} onChange={e=>set("guests",e.target.value)} rows={3}
+                placeholder={"VD:\n- Vợ/chồng: Nguyễn Thị B (người lớn)\n- Con: Nguyễn C (5 tuổi)"}
+                style={{...iStyle("guests"),resize:"vertical"}} />
+              <div style={{marginTop:10,fontSize:12,color:"rgba(255,248,238,0.4)",lineHeight:1.6}}>
+                💰 Người lớn & trẻ &gt;5 tuổi: <strong style={{color:"#FFB800"}}>1.000.000đ</strong> · Trẻ &lt;5 tuổi: <strong style={{color:"#4DD0E1"}}>Free</strong>
+              </div>
+            </div>
+          )}
+
           <div style={{marginBottom:24}}>
             <FLabel text="Điều bạn hóng nhất?" />
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -995,7 +1016,7 @@ function AdminPage({ onBack }) {
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
               <thead>
                 <tr style={{background:"rgba(14,77,117,0.8)"}}>
-                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Lưu ý","Lời nhắn","Đóng tiền",""].map(h=>(
+                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Người thân","Lưu ý","Lời nhắn","Đóng tiền",""].map(h=>(
                     <th key={h} style={{padding:"13px 16px",textAlign:"left",color:"#FFB800",fontWeight:700,letterSpacing:"0.06em",borderBottom:"2px solid rgba(255,184,0,0.3)",whiteSpace:"nowrap",fontSize:12}}>{h}</th>
                   ))}
                 </tr>
@@ -1024,6 +1045,11 @@ function AdminPage({ onBack }) {
                       </span>
                     </td>
                     <td style={{padding:"12px 16px",whiteSpace:"nowrap",color:"rgba(255,255,255,0.6)",fontSize:12}}>{nMap[r.overnight]||"—"}</td>
+                    <td style={{padding:"12px 16px",maxWidth:160,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                      {r.hasGuests==="yes"
+                        ? <span title={r.guests} style={{color:"#FFB800",fontWeight:700,fontSize:12}}>👨‍👩‍👧 {r.guests ? r.guests.split("\n").length+"người" : "Có"}</span>
+                        : <span style={{color:"rgba(255,255,255,0.3)",fontSize:12}}>—</span>}
+                    </td>
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:160,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.notes}>{r.notes||"—"}</td>
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:180,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.message}>{r.message||"—"}</td>
                     <td style={{padding:"12px 16px",whiteSpace:"nowrap",textAlign:"center"}}>
@@ -1129,6 +1155,32 @@ function AdminPage({ onBack }) {
                 <option value="yes">Ở lại đêm</option>
                 <option value="no">Về tối</option>
               </select>
+            </div>
+            <div style={{marginBottom:16}}>
+              <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Người thân đi cùng</div>
+              <select value={editing.data.hasGuests||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,hasGuests:e.target.value}}))}
+                style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",appearance:"none",marginBottom:8}}>
+                <option value="">Chưa chọn</option>
+                <option value="yes">Có người thân</option>
+                <option value="no">Không</option>
+              </select>
+              {editing.data.hasGuests==="yes" && (
+                <textarea value={editing.data.guests||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,guests:e.target.value}}))} rows={3}
+                  placeholder="Danh sách người thân..." style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",resize:"vertical"}} />
+              )}
+            </div>
+            <div style={{marginBottom:16}}>
+              <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Người thân đi cùng</div>
+              <select value={editing.data.hasGuests||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,hasGuests:e.target.value}}))}
+                style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",appearance:"none",marginBottom:8}}>
+                <option value="">Chưa chọn</option>
+                <option value="yes">Có người thân</option>
+                <option value="no">Không</option>
+              </select>
+              {editing.data.hasGuests==="yes" && (
+                <textarea value={editing.data.guests||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,guests:e.target.value}}))} rows={3}
+                  placeholder="Danh sách người thân..." style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",resize:"vertical"}} />
+              )}
             </div>
             <div style={{marginBottom:24}}>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Dị ứng / Lưu ý</div>
