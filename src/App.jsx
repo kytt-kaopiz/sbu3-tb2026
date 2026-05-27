@@ -820,10 +820,18 @@ function AdminPage({ onBack }) {
   const startEdit = (r, idx) => setEditing({ idx, data: {...r} });
 
   const saveEdit = async () => {
-    const newRows = (rows||[]).map(r => r.id === editing.data.id ? editing.data : r);
-    await saveRows(newRows);
-    setEditing(null);
-    showToast("Đã lưu thay đổi!");
+    const res = await fetch("/api/registrations", {
+      method: "PUT",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(editing.data),
+    });
+    if (res.ok) {
+      setRows((rows||[]).map(r => r.id === editing.data.id ? editing.data : r));
+      setEditing(null);
+      showToast("✅ Đã lưu thay đổi!");
+    } else {
+      showToast("❌ Lỗi lưu, thử lại!");
+    }
   };
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(""), 2500); };
@@ -1123,7 +1131,12 @@ function AdminPage({ onBack }) {
             </div>
             <div style={{marginBottom:24}}>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Dị ứng / Lưu ý</div>
-              <textarea value={editing.data.notes||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,notes:e.target.value}}))} rows={3}
+              <textarea value={editing.data.notes||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,notes:e.target.value}}))} rows={2}
+                style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",resize:"vertical"}} />
+            </div>
+            <div style={{marginBottom:24}}>
+              <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Lời nhắn cho BTC</div>
+              <textarea value={editing.data.message||""} onChange={e=>setEditing(ed=>({...ed,data:{...ed.data,message:e.target.value}}))} rows={2}
                 style={{width:"100%",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"10px 14px",color:"#FFF8EE",fontFamily:"Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif",fontSize:14,outline:"none",resize:"vertical"}} />
             </div>
             <div style={{display:"flex",gap:12}}>
