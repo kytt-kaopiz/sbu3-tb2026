@@ -234,17 +234,18 @@ function PaidList() {
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>
         {rows.map((r,i)=>(
           <div key={r.id} style={{
-            display:"flex",alignItems:"center",gap:12,
-            padding:"12px 16px",borderRadius:10,
+            display:"flex",alignItems:"flex-start",gap:12,
+            padding:"14px 16px",borderRadius:10,
             background: r.paid ? "rgba(41,182,246,0.1)" : "rgba(255,255,255,0.04)",
             border:"1px solid "+(r.paid ? "rgba(77,208,225,0.35)" : "rgba(255,255,255,0.08)"),
           }}>
             <div style={{width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,#29B6F6,#0288D1)",
-              display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:"white",flexShrink:0}}>
+              display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:"white",flexShrink:0,marginTop:2}}>
               {i+1}
             </div>
-            <div style={{minWidth:0}}>
+            <div style={{minWidth:0,flex:1}}>
               <div style={{fontWeight:700,fontSize:14,color:"#FFF8EE",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.fullname}</div>
+              <div style={{fontSize:11,color:"rgba(255,248,238,0.45)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",marginTop:2}}>{r.email}</div>
               <div style={{fontSize:11,marginTop:2,color: r.paid ? "#4DD0E1" : "rgba(255,248,238,0.35)"}}>
                 {r.paid ? "✅ Đã đóng tiền" : "⏳ Chưa đóng"}
               </div>
