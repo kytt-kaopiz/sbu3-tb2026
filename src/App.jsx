@@ -1019,7 +1019,7 @@ function AdminPage({ onBack }) {
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
               <thead>
                 <tr style={{background:"rgba(14,77,117,0.8)"}}>
-                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Người thân","Lưu ý","Lời nhắn","Đóng tiền","Số tiền",""].map(h=>(
+                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Người thân","Hóng nhất","Lưu ý","Lời nhắn","Đóng tiền","Số tiền",""].map(h=>(
                     <th key={h} style={{padding:"13px 16px",textAlign:"left",color:"#FFB800",fontWeight:700,letterSpacing:"0.06em",borderBottom:"2px solid rgba(255,184,0,0.3)",whiteSpace:"nowrap",fontSize:12}}>{h}</th>
                   ))}
                 </tr>
@@ -1052,6 +1052,33 @@ function AdminPage({ onBack }) {
                       {r.hasGuests==="yes"
                         ? <span title={r.guests} style={{color:"#FFB800",fontWeight:700,fontSize:12}}>👨‍👩‍👧 {r.guests ? r.guests.split("\n").length+"người" : "Có"}</span>
                         : <span style={{color:"rgba(255,255,255,0.3)",fontSize:12}}>—</span>}
+                    </td>
+                    <td style={{padding:"12px 16px",maxWidth:200,fontSize:12}}>
+                      {r.highlights
+                        ? <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                            {r.highlights.split(", ").filter(Boolean).map((h,i)=>(
+                              <span key={i} style={{padding:"2px 8px",background:"rgba(41,182,246,0.15)",border:"1px solid rgba(41,182,246,0.25)",borderRadius:20,color:"#4DD0E1",fontSize:11,whiteSpace:"nowrap"}}>{h}</span>
+                            ))}
+                          </div>
+                        : <span style={{color:"rgba(255,255,255,0.3)"}}>—</span>}
+                    </td>
+                    <td style={{padding:"12px 16px",maxWidth:220,fontSize:12}}>
+                      {r.highlights
+                        ? <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                            {r.highlights.split(", ").filter(Boolean).map((h,i)=>(
+                              <span key={i} style={{padding:"2px 8px",background:"rgba(41,182,246,0.15)",border:"1px solid rgba(41,182,246,0.25)",borderRadius:20,color:"#4DD0E1",fontSize:11,whiteSpace:"nowrap"}}>{h}</span>
+                            ))}
+                          </div>
+                        : <span style={{color:"rgba(255,255,255,0.3)"}}>—</span>}
+                    </td>
+                    <td style={{padding:"12px 16px",maxWidth:220,fontSize:12}}>
+                      {r.highlights
+                        ? <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                            {r.highlights.split(", ").filter(Boolean).map((h,i)=>(
+                              <span key={i} style={{padding:"2px 8px",background:"rgba(41,182,246,0.15)",border:"1px solid rgba(41,182,246,0.25)",borderRadius:20,color:"#4DD0E1",fontSize:11,whiteSpace:"nowrap"}}>{h}</span>
+                            ))}
+                          </div>
+                        : <span style={{color:"rgba(255,255,255,0.3)"}}>—</span>}
                     </td>
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:160,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.notes}>{r.notes||"—"}</td>
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:180,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.message}>{r.message||"—"}</td>
@@ -1175,6 +1202,12 @@ function AdminPage({ onBack }) {
                 <option value="yes">Ở lại đêm</option>
                 <option value="no">Về tối</option>
               </select>
+            </div>
+            <div style={{marginBottom:16}}>
+              <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:8}}>Điều hóng nhất</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,0.6)",padding:"10px 14px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,minHeight:36}}>
+                {editing.data.highlights || <span style={{color:"rgba(255,255,255,0.25)"}}>Chưa chọn</span>}
+              </div>
             </div>
             <div style={{marginBottom:16}}>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginBottom:6}}>Người thân đi cùng</div>
