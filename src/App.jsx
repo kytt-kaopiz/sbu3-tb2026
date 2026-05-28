@@ -188,7 +188,7 @@ const FAQS = [
   {q:"Ở lại đêm có bắt buộc không?", a:"Không bắt buộc, nhưng recommend ở lại full 2 ngày để trải nghiệm Gala Dinner & Lửa trại — đây là phần không thể bỏ lỡ!"},
   {q:"Đăng ký deadline khi nào?", a:"Deadline đăng ký là 17h30 ngày 05/06/2026. Sau deadline BTC sẽ không thể đảm bảo slot xe và chỗ ở nên anh em đăng ký sớm nhé!"},
   {q:"Có thể đăng ký cho người thân đi cùng không?", a:"Thoải mái! Người thân của thành viên SBU3 cũng sẽ là member của SBU3 ❤️ Các case gia đình muốn ở riêng có thể liên hệ BTC."},
-  {q:"Liên hệ BTC qua đâu nếu có thắc mắc?", a:"Nhắn trực tiếp qua Teams cho KyTT (Phụ trách tổng) hoặc PhuongNT (Mama tổng quản). Mọi thắc mắc sẽ được giải đáp trong vòng 24h."},
+  {q:"Liên hệ BTC qua đâu nếu có thắc mắc?", a:"Nhắn trực tiếp qua Teams cho KyTT (Phụ trách tổng) hoặc PhuongNT3 (Mama tổng quản). Mọi thắc mắc sẽ được giải đáp trong vòng 24h."},
 ];
 
 function FaqList() {
@@ -248,6 +248,9 @@ function PaidList() {
               <div style={{fontSize:11,marginTop:2,color: r.paid ? "#4DD0E1" : "rgba(255,248,238,0.35)"}}>
                 {r.paid ? "✅ Đã đóng tiền" : "⏳ Chưa đóng"}
               </div>
+              {r.paid && r.amount && (
+                <div style={{fontSize:11,marginTop:1,color:"#FFB800",fontWeight:700}}>{r.amount}</div>
+              )}
             </div>
           </div>
         ))}
@@ -1016,7 +1019,7 @@ function AdminPage({ onBack }) {
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
               <thead>
                 <tr style={{background:"rgba(14,77,117,0.8)"}}>
-                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Người thân","Lưu ý","Lời nhắn","Đóng tiền",""].map(h=>(
+                  {["#","Thời gian","Họ và tên","Email","Số ĐT","Tham gia","Ở đêm","Người thân","Lưu ý","Lời nhắn","Đóng tiền","Số tiền",""].map(h=>(
                     <th key={h} style={{padding:"13px 16px",textAlign:"left",color:"#FFB800",fontWeight:700,letterSpacing:"0.06em",borderBottom:"2px solid rgba(255,184,0,0.3)",whiteSpace:"nowrap",fontSize:12}}>{h}</th>
                   ))}
                 </tr>
@@ -1071,6 +1074,23 @@ function AdminPage({ onBack }) {
                       }}>
                         {r.paid ? "✅ Đã đóng" : "⏳ Chưa"}
                       </button>
+                    </td>
+                    <td style={{padding:"12px 16px",whiteSpace:"nowrap",minWidth:120}}>
+                      <input
+                        type="text"
+                        value={r.amount||""}
+                        onChange={async e=>{
+                          const val = e.target.value;
+                          const updated = {...r, amount: val};
+                          setRows(rows.map(x=>x.id===r.id?updated:x));
+                        }}
+                        onBlur={async e=>{
+                          const updated = {...r, amount: e.target.value};
+                          await fetch("/api/registrations",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(updated)});
+                        }}
+                        placeholder="VD: 300.000đ"
+                        style={{width:110,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,padding:"5px 8px",color:"#4DD0E1",fontSize:12,outline:"none",fontFamily:"Calibri,sans-serif"}}
+                      />
                     </td>
                     <td style={{padding:"12px 16px",whiteSpace:"nowrap"}}>
                       <button onClick={()=>startEdit(r,i)} style={{marginRight:6,padding:"4px 10px",background:"rgba(255,184,0,0.15)",border:"1px solid rgba(255,184,0,0.3)",borderRadius:5,color:"#FFB800",fontSize:11,cursor:"pointer",fontWeight:700}}>Sửa</button>
