@@ -1062,24 +1062,6 @@ function AdminPage({ onBack }) {
                           </div>
                         : <span style={{color:"rgba(255,255,255,0.3)"}}>—</span>}
                     </td>
-                    <td style={{padding:"12px 16px",maxWidth:220,fontSize:12}}>
-                      {r.highlights
-                        ? <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                            {r.highlights.split(", ").filter(Boolean).map((h,i)=>(
-                              <span key={i} style={{padding:"2px 8px",background:"rgba(41,182,246,0.15)",border:"1px solid rgba(41,182,246,0.25)",borderRadius:20,color:"#4DD0E1",fontSize:11,whiteSpace:"nowrap"}}>{h}</span>
-                            ))}
-                          </div>
-                        : <span style={{color:"rgba(255,255,255,0.3)"}}>—</span>}
-                    </td>
-                    <td style={{padding:"12px 16px",maxWidth:220,fontSize:12}}>
-                      {r.highlights
-                        ? <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                            {r.highlights.split(", ").filter(Boolean).map((h,i)=>(
-                              <span key={i} style={{padding:"2px 8px",background:"rgba(41,182,246,0.15)",border:"1px solid rgba(41,182,246,0.25)",borderRadius:20,color:"#4DD0E1",fontSize:11,whiteSpace:"nowrap"}}>{h}</span>
-                            ))}
-                          </div>
-                        : <span style={{color:"rgba(255,255,255,0.3)"}}>—</span>}
-                    </td>
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:160,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.notes}>{r.notes||"—"}</td>
                     <td style={{padding:"12px 16px",color:"rgba(255,255,255,0.5)",maxWidth:180,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={r.message}>{r.message||"—"}</td>
                     <td style={{padding:"12px 16px",whiteSpace:"nowrap",textAlign:"center"}}>
