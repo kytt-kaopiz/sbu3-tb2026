@@ -870,11 +870,13 @@ function AdminPage({ onBack }) {
   const nMap = { yes:"Ở lại đêm", no:"Về tối" };
 
   const buildCSV = (data) => {
-    const header = ["STT","Thời gian","Họ và tên","Tên thân mật","Email","Số điện thoại","Tham gia","Ở lại đêm","Điều hóng nhất","Dị ứng / Lưu ý","Lời nhắn BTC"];
+    const header = ["STT","Thời gian","Họ và tên","Email","Số điện thoại","Tham gia","Ở lại đêm","Người thân","Điều hóng nhất","Dị ứng / Lưu ý","Lời nhắn BTC","Đóng tiền","Số tiền đóng"];
     const body = data.map((r,i) => [
-      i+1, r.time, r.fullname, r.nickname||"", r.email, r.phone,
+      i+1, r.time, r.fullname, r.email, r.phone,
       aMap[r.attend]||r.attend, nMap[r.overnight]||"",
+      r.hasGuests==="yes" ? (r.guests||"Có") : "Không",
       r.highlights||"", r.notes||"", r.message||"",
+      r.paid ? "Đã đóng" : "Chưa đóng", r.amount||"",
     ]);
     return [header,...body].map(row => row.map(c => `"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
   };
